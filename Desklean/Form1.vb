@@ -214,7 +214,9 @@ Public Class Form1
 
     Sub loadConfs()
 
-        'carrega splash
+        Try
+
+            'carrega splash
         frmSplash = New Splash
         frmSplash.Show()
         Splash.Enabled = True
@@ -252,16 +254,26 @@ Public Class Form1
             link.Save()
         End If
 
-        If Not IO.File.Exists(Path.GetDirectoryName(Application.ExecutablePath) & "\config.desk") Then
-            config = New Configuracao
-            config.Grupos = cl.retGrupos
 
-            Serialize(Path.GetDirectoryName(Application.ExecutablePath) & "\config.desk", config)
+
+        If Not IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk" & "\config.desk") Then
+            config = New Configuracao
+                config.Grupos = cl.retGrupos
+
+                If Not IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk") Then
+                    IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk")
+                End If
+
+            Serialize(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk" & "\config.desk", config)
         Else
-            config = Deserialize(Path.GetDirectoryName(Application.ExecutablePath) & "\config.desk")
+            config = Deserialize(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk" & "\config.desk")
         End If
 
-        loading = False
+            loading = False
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
 
     End Sub
 

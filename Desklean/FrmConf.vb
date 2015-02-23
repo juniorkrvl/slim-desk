@@ -33,7 +33,7 @@ Public Class FrmConf
     End Sub
 
     Private Sub btnSalvar_Click(sender As Object, e As EventArgs) Handles btnSalvar.Click
-        Serialize(Path.GetDirectoryName(Application.ExecutablePath) & "\config.desk", config)
+        Serialize(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\SlimDesk" & "\config.desk", config)
         Me.Close()
     End Sub
 
